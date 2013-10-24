@@ -6,6 +6,10 @@
 ##################
 bin/
 
+## Test Harness ##
+##################
+test/
+
 ### Exceptions ###
 ##################
 !.gitignore
