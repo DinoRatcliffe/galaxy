@@ -4,6 +4,15 @@
 #include <imgproc/imgproc.hpp>
 #include <vector>
 
+int vib_upper = 255;
+int vib_lower = 50;
+int hue_upper = 120;
+int hue_lower = 109;
+int sat_upper = 255;
+int sat_lower = 50;
+
+int spiralThresh = 50;
+
 int main(int argc, char** argv) {
 	char* imageName = argv[1];
 
@@ -14,15 +23,25 @@ int main(int argc, char** argv) {
 	std::vector<cv::Mat> v_channel;
 	split(imageHSV, v_channel);
 
-	int bluePix = 0;
+	int pix = 0;
 
 	for (int i = 0; i<imageHSV.rows; i++) {
 		for (int j = 0; j<imageHSV.cols; j++) {
 			int hue = (int) v_channel[0].at<uchar>(i, j);
-			if (hue > 219/2 && hue < 240/2) bluePix++;
+			int sat = (int) v_channel[1].at<uchar>(i, j);
+			int vib = (int) v_channel[2].at<uchar>(i, j);
+
+			if ( 
+				hue > hue_lower && hue < hue_upper && 
+				sat > sat_lower && sat < sat_upper && 
+				vib > vib_lower && vib < vib_upper
+				) 
+			{
+				pix++;
+			}
 		}
 	}
-	if (bluePix > 1900) {
+	if (pix > spiralThresh) {
 		printf("spiral\n");
 	} else {
 		printf("ellipse\n");
