@@ -5,13 +5,14 @@
 #include <vector>
 
 int vib_upper = 255;
-int vib_lower = 50;
-int hue_upper = 120;
-int hue_lower = 109;
+int vib_lower = 50;//50 71%
+int hue_upper = 130;//120;
+int hue_lower = 90;//109;
 int sat_upper = 255;
-int sat_lower = 50;
+int sat_lower = 10;
 
-int spiralThresh = 50;
+//Seems to have little effect on test data 0 = 0.61 precison, 55 = 0.68, 250 = 0.61 
+int spiralThresh = 250;//250 71%
 
 int main(int argc, char** argv) {
 	char* imageName = argv[1];
