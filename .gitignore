@@ -9,6 +9,7 @@ bin/
 ## Test Harness ##
 ##################
 test/
+train/
 
 ### Exceptions ###
 ##################
