@@ -10,14 +10,20 @@ GalaxyCategoriser::GalaxyCategoriser() {
 	hue_upper	= 130;
 	hue_lower	= 90;
 
-	thresh		= 250;
+	thresh		= 750;
 }
 
 GalaxyCategoriser::GalaxyType GalaxyCategoriser::categoriseGalaxy(cv::Mat image) {
 	cv::Mat imageHsv;
 	cvtColor(image, imageHsv, CV_BGR2HSV);
 	
-	int pixels = countPixels(imageHsv);
+	cv::Mat bluredImage;
+	cv::Size ksize;
+	ksize.width = 5;
+	ksize.height = 5;
+	blur(imageHsv, bluredImage, ksize);
+
+	int pixels = countPixels(bluredImage);
 	return pixels > thresh ? SPIRAL : ELLIPSE;
 }
 
