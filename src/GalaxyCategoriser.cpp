@@ -3,6 +3,7 @@
 #include <imgproc/imgproc.hpp>
 
 GalaxyCategoriser::GalaxyCategoriser() {
+	//initialise defaults
 	vib_upper	= 255;
 	vib_lower	= 50;
 	sat_upper	= 255;
@@ -14,23 +15,28 @@ GalaxyCategoriser::GalaxyCategoriser() {
 }
 
 GalaxyCategoriser::GalaxyType GalaxyCategoriser::categoriseGalaxy(cv::Mat image) {
+	//convert image
 	cv::Mat imageHsv;
 	cvtColor(image, imageHsv, CV_BGR2HSV);
 	
+	//blur image
 	cv::Mat bluredImage;
 	cv::Size ksize;
 	ksize.width = 5;
 	ksize.height = 5;
 	blur(imageHsv, bluredImage, ksize);
 
+	//count blue pixels
 	int pixels = countPixels(bluredImage);
 	return pixels > thresh ? SPIRAL : ELLIPSE;
 }
 
 int GalaxyCategoriser::countPixels(cv::Mat image) {
+	//split channels
 	std::vector<cv::Mat> hsvChannels;
 	split(image, hsvChannels);
 
+	//count pixels
 	int numPix = 0;
 	for (int i = 0; i < image.rows; i++) {
 		for (int j = 0; j < image.cols; j++) {
