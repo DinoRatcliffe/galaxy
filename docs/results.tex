@@ -1,0 +1,100 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\begin{document}
+\begin{titlepage}
+\begin{center}
+
+\textsc{\LARGE University of Essex}\\[1.5cm]
+\textsc{\Large Computer Vision}\\[0.5cm]
+
+\HRule \\[0.4cm]
+{ \huge \bfseries Assignment 1: Performance Evaluation \\[0.4cm] }
+\HRule \\[1.5cm]
+
+\begin{minipage}{1.0\textwidth}
+\begin{flushleft} \large
+\emph{Author:}\\
+1101399
+\end{flushleft}
+\end{minipage}
+
+\vfill
+
+\end{center}
+\end{titlepage}
+
+\section{Assesment}
+\subsection{Isolation}
+
+\begin{table}[h]
+\caption{galaxy Results}
+\centering
+\begin{tabular}{c rrrrrrrrrr}
+\hline \hline
+tests & TP & TN & FP & FN & accuracy & recall & precision & specificity & class \\[0.5ex]
+\hline
+500 & 354 & 0 & 146 & 0 & 0.71 & 1.00 & 0.71 & 0.00 & ellipse \\
+500 & 372 & 0 & 128 & 0 & 0.74 & 1.00 & 0.74 & 0.00 & spiral \\
+1000 & 726 & 0 & 274 & 0 & 0.73 & 1.00 & 0.73 & 0.00 & overall \\
+\hline
+\end{tabular}
+\end{table}
+
+By studying these results It easy to see that the algorithm managers to classify the galaxy over 70\% of the time. It also shows that it tends to be more aligned to the side of catagorising galaxies as spirals rather than elliptical. The recall is always 1.00 because my program is required to print either ellipse or spiral when it is run, this results in it never checking if the image acctually contains a galaxy. This is a wakness for this program that needs to be addressed before it can be used effectively unless it is combined with another program that checks if a galaxy is present. Given that that the recall is always 1.00 this means that the precision always matches the accuracy because
+\begin{equation}
+\begin{split}
+precision = \frac{TP}{TP+FP}
+\end{split}
+\end{equation}
+Resulting in the precision always being the same as the accuracy.
+
+\begin{table}[h]
+\caption{galaxy Confusion Matrix}
+\centering
+\begin{tabular}{|c |rr|r}
+\hline 
+& Ellipse & Spiral  \\[0.5ex]
+\hline 
+Ellipse & 354 & 128 \\
+Spiral & 146 & 372 \\
+\hline
+\end{tabular}
+\end{table}
+When studying the confusion matrix above it becomes clear that the algorithm does moderately well at distinguishing between elliptical and spiral galaxies but there are a large number of misclassifications.
+
+\subsection{Comparison to agal}
+\begin{table}[h]
+\caption{agal Results}
+\centering
+\begin{tabular}{c rrrrrrrrrr}
+\hline \hline
+tests & TP & TN & FP & FN & accuracy & recall & precision & specificity & class \\[0.5ex]
+\hline
+500 & 184 & 0 & 258 & 58 & 0.37 & 0.76 & 0.42 & 0.00 & ellipse \\
+500 & 232 & 0 & 207 & 61 & 0.46 & 0.79 & 0.53 & 0.00 & spiral \\
+1000 & 416 & 0 & 465 & 119 & 0.42 & 0.78 & 0.47 & 0.00 & overall \\
+\hline
+\end{tabular}
+\end{table}
+Looking at the analysis of agal.res it becomes obvious that it attempts to see if it believes there is even a galaxy in the image because it manages to occumalate some False Negatives indicating that it didn't find a galaxy in the image. It also highlights that it has a similar characteristic of having correctly selecting spiral galaxies more often than elliptical ones.
+
+\begin{table}[h]
+\caption{McNemar Results}
+\centering
+\begin{tabular}{c rr}
+\hline \hline
+Z-Score & class \\[0.5ex]
+\hline
+109.01 & ellipse \\
+74.31 & spiral \\
+\hline
+\end{tabular}
+\end{table}
+
+When comparing my program to agal.res using the McNemar's test it shows that my implementation outperforms agal.res in both categorising spiral galaxies and elliptical ones. 
+
+\end{document}
