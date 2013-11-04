@@ -7,7 +7,7 @@
 ///		and comparing the result with the galaxy types
 ///		defined in this class.
 ///
-/// \author Dino Ratlcliffe
+/// \author 1101399
 /// \date 2013
 ///////////////////////////////////////////////////////////////
 #ifndef _GALAXYCATEGORISER_H_
@@ -41,7 +41,7 @@ class GalaxyCategoriser {
 		/// \param image a cv Mat image
 		/// \returns
 		////////////////////////////////////////////////////////////
-		GalaxyType categoriseGalaxy(cv::Mat image);
+		GalaxyType categoriseGalaxy(cv::Mat& image);
 	private:
 		int vib_upper; /// upper limit to match vibrance of pixel
 		int vib_lower; /// lower limit to match vibrance of pixel
@@ -62,6 +62,23 @@ class GalaxyCategoriser {
 		/// \returns 	int 	a count of the number of pixels 
 		///			within parameters
 		///////////////////////////////////////////////////////////
-		int countPixels(cv::Mat image);
+		int countPixels(cv::Mat& image);
+		
+		//////////////////////////////////////////////////////////
+		/// This function takes a color defined as three arguments
+		/// specifying the hue, saturation and vibrance in the same
+		/// ranges defined for opencv
+		///
+		/// \param	hue	the hue defined between 0 - 180
+		/// \param	sat	the saturation of the color 
+		///			between 0 - 255
+		/// \param	vib	the vibrance of the color defined
+		///			between 0-255
+		/// \warning 	arguments are not range checked
+		///
+		/// \returns	a boolean indicating if color lies within
+		///		the range defined in this object instance.
+		//////////////////////////////////////////////////////////
+		bool colorInRange(int& hue, int& sat, int& vib);
 };
 #endif

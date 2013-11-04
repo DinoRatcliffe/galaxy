@@ -14,7 +14,7 @@ GalaxyCategoriser::GalaxyCategoriser() {
 	thresh		= 750;
 }
 
-GalaxyCategoriser::GalaxyType GalaxyCategoriser::categoriseGalaxy(cv::Mat image) {
+GalaxyCategoriser::GalaxyType GalaxyCategoriser::categoriseGalaxy(cv::Mat& image) {
 	//convert image
 	cv::Mat imageHsv;
 	cvtColor(image, imageHsv, CV_BGR2HSV);
@@ -31,7 +31,7 @@ GalaxyCategoriser::GalaxyType GalaxyCategoriser::categoriseGalaxy(cv::Mat image)
 	return pixels > thresh ? SPIRAL : ELLIPSE;
 }
 
-int GalaxyCategoriser::countPixels(cv::Mat image) {
+int GalaxyCategoriser::countPixels(cv::Mat& image) {
 	//split channels
 	std::vector<cv::Mat> hsvChannels;
 	split(image, hsvChannels);
@@ -44,14 +44,15 @@ int GalaxyCategoriser::countPixels(cv::Mat image) {
 			int sat = (int) hsvChannels[1].at<uchar>(i, j);
 			int vib = (int) hsvChannels[2].at<uchar>(i, j);
 
-			if (	hue > hue_lower && hue < hue_upper &&
-				sat > sat_lower && sat < sat_upper &&
-				vib > vib_lower && vib < vib_upper
-			) {
-				numPix++;
-			}
+			if ( colorInRange(hue, sat, vib) ) numPix++;
 		}	
 	}	
 
 	return numPix;
+}
+
+bool GalaxyCategoriser::colorInRange(int& hue, int& sat, int& vib) {
+	return  hue < hue_upper && hue > hue_lower &&
+		sat < sat_upper && sat > sat_lower &&
+		vib < vib_upper && vib > vib_lower;
 }
