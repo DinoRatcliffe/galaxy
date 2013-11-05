@@ -38,10 +38,10 @@ class GalaxyCategoriser {
 		/// is higer than a defined threshold it will return the type
 		/// spiral.
 		///
-		/// \param image a cv Mat image
+		/// \param image a cv Mat image in BGR format
 		/// \returns
 		////////////////////////////////////////////////////////////
-		GalaxyType categoriseGalaxy(cv::Mat& image);
+		GalaxyType categoriseGalaxy(cv::Mat const &image) const;
 	private:
 		int vib_upper; /// upper limit to match vibrance of pixel
 		int vib_lower; /// lower limit to match vibrance of pixel
@@ -50,8 +50,9 @@ class GalaxyCategoriser {
 		int sat_upper; /// upper limit to match the saturation of the pixel
 		int sat_lower; /// lower limit to match the saturation of the pixel
 
-		int thresh; /// the threshold that the pixel number should go over 
-			    /// to catagorise it as a spiral galaxy
+		float thresh; /// the threshold that the pixel number should go over 
+			      /// to catagorise it as a spiral galaxy. represented as a 
+			      /// percentage of the images overall number of pixels
 
 		///////////////////////////////////////////////////////////
 		/// This function takes an image and then counts the 
@@ -62,7 +63,7 @@ class GalaxyCategoriser {
 		/// \returns 	int 	a count of the number of pixels 
 		///			within parameters
 		///////////////////////////////////////////////////////////
-		int countPixels(cv::Mat& image);
+		int countPixels(cv::Mat const &image) const;
 		
 		//////////////////////////////////////////////////////////
 		/// This function takes a color defined as three arguments
@@ -79,6 +80,6 @@ class GalaxyCategoriser {
 		/// \returns	a boolean indicating if color lies within
 		///		the range defined in this object instance.
 		//////////////////////////////////////////////////////////
-		bool colorInRange(int& hue, int& sat, int& vib);
+		bool colorInRange(int hue, int sat, int vib) const;
 };
 #endif

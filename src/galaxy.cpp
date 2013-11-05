@@ -17,6 +17,38 @@
 ///
 /// \author 1101399
 /// \date 2013
+//
+//	TESTS
+//	>>> galaxy -h
+//	usage: galaxy [ -h ] image
+//
+//	>>> galaxy
+//	Requires Image argument
+//	usage: galaxy [ -h ] image
+//
+//	>>> galaxy -help
+//	usage: galaxy [ -h ] image
+//
+//	>>> galaxy -p
+//	galaxy: invalid option -- 'p'
+//	usage: galaxy [ -h ] image
+//
+//	>>> galaxy --help
+//	galaxy: invalid option -- '-'
+//	usage: galaxy [ -h ] image
+//
+//	>>> galaxy A_NON_IMAGE_FILE
+//	Error - Cannot open image "A_NON_IMAGE_FILE"
+//
+//	THIS TEST REQUIRES LEGITEMATE IMAGE FILES AS FOUND IN test
+//	>>> galaxy gz-0668.jpg
+//	spiral
+//
+//	>>> galaxy gz-0001.jpg
+//	ellipse
+//
+//	>>> galaxy -h gz-0668.jpg
+//	usage: galaxy [ -h ] image
 ////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////
@@ -36,6 +68,11 @@ void printUsage(char* program) {
 
 }
 
+void exitWithUsage(char* program) {
+	printUsage(program);
+	exit(EXIT_FAILURE);
+}
+
 int handleOptions(int argc, char** argv) {
 	bool needUsage = false;
 	//handle flags
@@ -43,25 +80,18 @@ int handleOptions(int argc, char** argv) {
 	while ((c = getopt(argc, argv, "h")) != -1){
 		switch (c) {
 			case 'h':
-				needUsage = true;
-			       	break;	
+				exitWithUsage(argv[0]);
+			       	break;
 			case '?':
-				 if (isprint (optopt)) fprintf (stderr, "Unknown option `-%c'.\n", optopt);
-				 else fprintf (stderr, "Unknown option character `\\x%x'.\n", optopt);
-				 needUsage = true;
-				 break;
+				exitWithUsage(argv[0]);
+				break;	
 		}
 	}
 	
 	//make sure there is a non flag argument
 	if ((argc - optind) == 0) {
-	       	printf("Requires image argument\n");
-		needUsage = true;
-	}
-
-	if (needUsage) {
-		printUsage(argv[0]);
-		exit(EXIT_FAILURE);
+		printf("Requires Image argument\n");
+		exitWithUsage(argv[0]);
 	}
 
 	return optind;
