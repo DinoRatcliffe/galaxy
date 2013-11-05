@@ -6,6 +6,10 @@
 ##################
 bin/
 
+### Documents ####
+##################
+docs/
+
 ## Test Harness ##
 ##################
 test/
@@ -14,3 +18,4 @@ train/
 ### Exceptions ###
 ##################
 !.gitignore
+!docs/results.tex
