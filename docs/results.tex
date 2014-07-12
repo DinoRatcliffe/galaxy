@@ -1,6 +1,7 @@
 \documentclass{article}
 
 \usepackage{amsmath}
+\usepackage{multirow}
 
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 
@@ -27,7 +28,7 @@
 \end{center}
 \end{titlepage}
 
-\section{Assesment}
+\section{Assessment}
 \subsection{Isolation}
 
 \begin{table}[h]
@@ -37,34 +38,44 @@
 \hline \hline
 tests & TP & TN & FP & FN & accuracy & recall & precision & specificity & class \\[0.5ex]
 \hline
-500 & 354 & 0 & 146 & 0 & 0.71 & 1.00 & 0.71 & 0.00 & ellipse \\
-500 & 372 & 0 & 128 & 0 & 0.74 & 1.00 & 0.74 & 0.00 & spiral \\
-1000 & 726 & 0 & 274 & 0 & 0.73 & 1.00 & 0.73 & 0.00 & overall \\
+500 & 360 & 0 & 140 & 0 & 0.72 & 1.00 & 0.72 & 0.00 & ellipse \\
+500 & 365 & 0 & 135 & 0 & 0.73 & 1.00 & 0.73 & 0.00 & spiral \\
+1000 & 725 & 0 & 275 & 0 & 0.72 & 1.00 & 0.72 & 0.00 & overall \\
 \hline
 \end{tabular}
 \end{table}
 
-By studying these results It easy to see that the algorithm managers to classify the galaxy over 70\% of the time. It also shows that it tends to be more aligned to the side of catagorising galaxies as spirals rather than elliptical. The recall is always 1.00 because my program is required to print either ellipse or spiral when it is run, this results in it never checking if the image acctually contains a galaxy. This is a wakness for this program that needs to be addressed before it can be used effectively unless it is combined with another program that checks if a galaxy is present. Given that that the recall is always 1.00 this means that the precision always matches the accuracy because
+By studying these results it's easy to see that the algorithm manages to classify the galaxy over 70\% of the time. It also shows that it tends to be more aligned to the side of categorising galaxies as spirals rather than elliptical. The recall is always 1.00 because my program is required to print either ellipse or spiral when it is run, this results in it never checking if the image actually contains a galaxy, so no FN or TN results can ever be generated. This is a weakness for this program that needs to be addressed before it can be used effectively, unless it is combined with another program that checks if a galaxy is present. The recall of the program is always 1.00 because the test data does not have any images that do not contain galaxies. If the test data had images that contained no galaxies then this program would be guaranteed to generate more FP results. 
+
+The accuracy and precision are the same value when analysing the results because all of the results are categorised as either TP or FP and never generates any FN or TN. That means that the definitions of accuracy and precision below become equivalent. 
+
 \begin{equation}
 \begin{split}
 precision = \frac{TP}{TP+FP}
 \end{split}
 \end{equation}
-Resulting in the precision always being the same as the accuracy.
+
+\begin{equation}
+\begin{split}
+accuracy = \frac{TP+TN}{TP+TN+FP+FN}
+\end{split}
+\end{equation}
+
+When studying the confusion matrix below it becomes clear that the algorithm does moderately well at distinguishing between elliptical and spiral galaxies but there are a large number of misclassifications. This algorithm could be improved in many ways to reduce the amount of misclassifications. One way that could improve the algorithm could be to use a more sophisticated approach for noise removal instead of simply blurring the image. Another more advanced improvement could be to detect where in the image the galaxy is and then crop the image around the galaxy allowing for a more accurate assessment of the colours the galaxy contains.
 
 \begin{table}[h]
 \caption{galaxy Confusion Matrix}
 \centering
-\begin{tabular}{|c |rr|r}
-\hline 
-& Ellipse & Spiral  \\[0.5ex]
-\hline 
-Ellipse & 354 & 128 \\
-Spiral & 146 & 372 \\
-\hline
+\begin{tabular}{cc|c|c|}
+	\cline{3-4}
+	& & \multicolumn{2}{c|}{Expected} \\ \cline{3-4}
+	& & Ellipse & Spiral \\ \cline{1-4}
+	\multicolumn{1}{|c|}{\multirow{2}{*}{Actual}} & 
+	Ellipse & 360 & 135 \\ \cline{2-4}
+	\multicolumn{1}{ |c }{} &
+   \multicolumn{1}{|c|}{Spiral} & 140 & 365 \\ \cline{1-4}
 \end{tabular}
 \end{table}
-When studying the confusion matrix above it becomes clear that the algorithm does moderately well at distinguishing between elliptical and spiral galaxies but there are a large number of misclassifications.
 
 \subsection{Comparison to agal}
 \begin{table}[h]
@@ -80,7 +91,7 @@ tests & TP & TN & FP & FN & accuracy & recall & precision & specificity & class 
 \hline
 \end{tabular}
 \end{table}
-Looking at the analysis of agal.res it becomes obvious that it attempts to see if it believes there is even a galaxy in the image because it manages to occumalate some False Negatives indicating that it didn't find a galaxy in the image. It also highlights that it has a similar characteristic of having correctly selecting spiral galaxies more often than elliptical ones.
+By looking at the results of agal.res you can tell that it must check to see if an image containes a galaxy. It's possible to tell this by the fact that it generates FN results indicating that it didn't find a galaxy when it should have. The results also show that it has a similar characteristic of having correctly selected spiral galaxies more often than elliptical ones.
 
 \begin{table}[h]
 \caption{McNemar Results}
@@ -89,12 +100,12 @@ Looking at the analysis of agal.res it becomes obvious that it attempts to see i
 \hline \hline
 Z-Score & class \\[0.5ex]
 \hline
-109.01 & ellipse \\
-74.31 & spiral \\
+114.27 & ellipse \\
+66.25 & spiral \\
 \hline
 \end{tabular}
 \end{table}
 
-When comparing my program to agal.res using the McNemar's test it shows that my implementation outperforms agal.res in both categorising spiral galaxies and elliptical ones. 
+When comparing my program to agal.res using McNemar's test it shows that my implementation outperforms agal.res in both categorising spiral galaxies and elliptical ones. It also highlights that my program has a larger improvement at selecting elliptical galaxies over spiral galaxies. By using McNemar not only are the results of the tests taken into account but the number of tests are also factored in. It makes sense that the more tests that you complete where one algorithm outperforms another the higher the z-score will be in favour of the better algorithm. Meaning that you have more confidence that the algorithm does in fact perform better than the one you are comparing it to.
 
 \end{document}
