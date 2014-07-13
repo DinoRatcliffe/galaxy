@@ -15,7 +15,7 @@
 ///		contains a galaxy so it will always output spiral
 ///		or ellipse
 ///
-/// \author 1101399
+/// \author Dino Ratcliffe
 /// \date 2013
 //
 //	TESTS

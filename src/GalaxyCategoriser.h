@@ -7,7 +7,7 @@
 ///		and comparing the result with the galaxy types
 ///		defined in this class.
 ///
-/// \author 1101399
+/// \author Dino Ratcliffe
 /// \date 2013
 ///////////////////////////////////////////////////////////////
 #ifndef _GALAXYCATEGORISER_H_
